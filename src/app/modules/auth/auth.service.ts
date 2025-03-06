@@ -9,72 +9,7 @@ import { ILoginPayload, ISignupPayload } from './auth.interface';
 import { createToken, verifyToken } from '../../utils/verifyJWT';
 import { MasterDBUser } from '../tenanat/tennant.model';
 
-// const tenantIdToConnection: any = {};
-// const signup = async (payload: ISignupPayload) => {
-//   const { email, name } = payload;
 
-//   const createMasterDB = await MasterDBUser.create({
-//     tenantId: "tenant123",
-//     dbName: "tenant123DB",
-//     userEmail: "user@example.com",
-//   }
-//   )
-//   mongoose.createConnection(`${config.db.base_db_url}/tenant1`)
-
-//   const session = await mongoose.startSession();
-//   session.startTransaction(); 
-//   const findUser = await User.findOne({email: payload.email})
-
-//   if(findUser?.email){
-//     throw new AppError(httpStatus.CONFLICT, 'This user is already exist!')
-//   }
-
-//   try {
-//     const { store_name, password, ...userData } = payload;
-
-//     const salt = bcrypt.genSaltSync(Number(config.password_salt_round as string));
-//     const hash = bcrypt.hashSync(password, salt);
-
-//     const signupData = {
-//       ...userData,
-//       password: hash,
-//     };
-
-//     // Create User inside the transaction
-//     const createUser = await User.create([signupData], { session });
-
-//     const storeData = {
-//       name: store_name,
-//       user_id: createUser[0]._id,
-//     };
-
-//     // Create Store inside the transaction
-//     const createStore = await Store.create([storeData], { session });
-
-//     // Commit transaction (save changes)
-//     await session.commitTransaction();
-//     session.endSession();
-
-//     // Return final response without password
-//     return {
-//       _id: createUser[0]._id,
-//       store_id: createStore[0]._id,
-//       name: createUser[0].name,
-//       email: createUser[0].email,
-//       phone: createUser[0].phone,
-//       role: createUser[0].role,
-//       permission: createUser[0].permission,
-//       store: createUser[0].status,
-//       createdAt: createUser[0].createdAt,
-//       updatedAt: createUser[0].updatedAt,
-//     };
-//   } catch (error) {
-//     // Rollback transaction if anything fails
-//     await session.abortTransaction();
-//     session.endSession();
-//     throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, "Signup failed, please try again.");
-//   }
-// };
 
 
 
