@@ -8,14 +8,9 @@ import AppError from "../../error/AppError";
 import { ILoginPayload, ISignupPayload } from './auth.interface';
 import { createToken, verifyToken } from '../../utils/verifyJWT';
 import { MasterDBUser } from '../tenanat/tennant.model';
-
-
-
-
-
 import  { Schema, Document, Connection } from "mongoose";
 import { IUser } from '../user/user.interface';
-import { getTenantConnection, getTenantModel } from '../../database/tenantDB';
+import { getTenantConnection } from '../../database/tenantDB';
 
 // Tenant connection cache
 const tenantConnections: { [key: string]: mongoose.Connection } = {};
@@ -26,9 +21,9 @@ const getUserModel = (tenantDbConnection: Connection) => {
 };
 
 
-const signup = async (payload: { email: string; name: string,  }) => {
+const signup = async (payload: ISignupPayload) => {
   const { email, name, phone, password, store_name } = payload;
-  const tenantId = "tenant6"; // এটি ডাইনামিক করতে পারেন
+  const tenantId = "tenant7"; 
   const tenantDbUri = `${config.db.base_db_url}/${tenantId}`;
 await MasterDBUser.create({dbName: tenantId, userEmail: email})
   const tenantDbConnection = getTenantConnection(tenantId)
