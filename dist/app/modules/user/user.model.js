@@ -41,12 +41,17 @@ const UserModel = new mongoose_1.Schema({
     phone: { type: String, required: true },
     password: { type: String, required: true },
     role: { type: String, default: "admin" },
-    permission: { type: mongoose_1.Schema.Types.ObjectId, default: null, ref: "Permission" },
+    permission: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        default: null,
+        ref: "Permission",
+    },
     store: { type: [mongoose_1.Schema.Types.ObjectId], ref: "Store", required: true },
     status: { type: Boolean, default: true },
 }, { timestamps: true });
 exports.User = mongoose_1.default.model("User", UserModel);
 const getUserModel = (tenantDbConnection) => {
-    return tenantDbConnection.models["User"] || tenantDbConnection.model("User", UserModel);
+    return (tenantDbConnection.models.User ||
+        tenantDbConnection.model("User", exports.User.schema));
 };
 exports.getUserModel = getUserModel;

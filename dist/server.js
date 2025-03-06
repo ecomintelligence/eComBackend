@@ -35,7 +35,6 @@ process.on('unhandledRejection', error => {
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            console.log(config_1.default.db.master_db_url);
             yield mongoose_1.default.connect(config_1.default.db.master_db_url);
             console.log('🛢 Database connected successfully');
             server = app_1.default.listen(config_1.default.port, () => {

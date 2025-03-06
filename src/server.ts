@@ -25,7 +25,6 @@ process.on('unhandledRejection', error => {
 
 async function bootstrap() {
   try {
-    console.log(config.db.master_db_url );
     await mongoose.connect(config.db.master_db_url as string)
     console.log('🛢 Database connected successfully')
     server = app.listen(config.port, () => {

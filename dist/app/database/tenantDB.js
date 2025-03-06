@@ -8,7 +8,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const config_1 = __importDefault(require("../config"));
 // Tenant Connection Cache
 const tenantConnections = {};
-// ✅ **Reusable Function to Get or Create Tenant DB Connection**
+// **Reusable Function to Get or Create Tenant DB Connection**
 const getTenantConnection = (tenantId) => {
     if (!tenantConnections[tenantId]) {
         const tenantDbUri = `${config_1.default.db.base_db_url}/${tenantId}`;

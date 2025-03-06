@@ -8,14 +8,21 @@ const UserModel = new Schema<IUser>(
     phone: { type: String, required: true },
     password: { type: String, required: true },
     role: { type: String, default: "admin" },
-    permission: { type: Schema.Types.ObjectId, default:null, ref: "Permission" },
+    permission: {
+      type: Schema.Types.ObjectId,
+      default: null,
+      ref: "Permission",
+    },
     store: { type: [Schema.Types.ObjectId], ref: "Store", required: true },
-    status: { type: Boolean,  default: true },
+    status: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
 export const User = mongoose.model<IUser>("User", UserModel);
 
 export const getUserModel = (tenantDbConnection: Connection) => {
-  return tenantDbConnection.models["User"] || tenantDbConnection.model<IUser>("User", UserModel);
+  return (
+    tenantDbConnection.models.User ||
+    tenantDbConnection.model<IUser>("User", User.schema)
+  );
 };

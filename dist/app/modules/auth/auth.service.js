@@ -19,38 +19,39 @@ const config_1 = __importDefault(require("../../config"));
 const user_model_1 = require("../user/user.model");
 const AppError_1 = __importDefault(require("../../error/AppError"));
 const verifyJWT_1 = require("../../utils/verifyJWT");
-const tennant_model_1 = require("../tenanat/tennant.model");
+const masterUser_model_1 = require("../masterUser/masterUser.model");
 const tenantDB_1 = require("../../database/tenantDB");
-// Tenant connection cache
-const tenantConnections = {};
-// ✅ **একটি ফাংশন যা Tenant Connection থেকে Model তৈরি করবে**
-const getUserModel = (tenantDbConnection) => {
-    return tenantDbConnection.models.User || tenantDbConnection.model("User", user_model_1.User.schema);
-};
+const mongoose_1 = __importDefault(require("mongoose"));
 const signup = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, name, phone, password, store_name } = payload;
-    const tenantId = "tenant7";
-    const tenantDbUri = `${config_1.default.db.base_db_url}/${tenantId}`;
-    yield tennant_model_1.MasterDBUser.create({ dbName: tenantId, userEmail: email });
+    // master db name 
+    const customObjectId = new mongoose_1.default.Types.ObjectId();
+    const tenantId = `user_${customObjectId}`;
+    // create master user 
+    yield masterUser_model_1.MasterDBUser.create({ dbName: tenantId, userEmail: email });
     const tenantDbConnection = (0, tenantDB_1.getTenantConnection)(tenantId);
-    // ✅ **Reuse existing User Schema for this tenant**
-    const User = getUserModel(tenantDbConnection);
-    // ✅ **Check if Users exist in this tenant DB**
-    const users = yield User.find();
-    console.log("Existing Users in", tenantId, "DB:", users);
-    const newUser = yield User.create({ email, name, phone, store_name, password });
-    console.log(newUser);
+    // Reuse existing User Schema for this tenant
+    const User = (0, user_model_1.getUserModel)(tenantDbConnection);
+    const userData = {
+        email,
+        name,
+        phone,
+        store_name,
+        password,
+    };
+    const newUser = yield User.create(userData);
+    return newUser;
 });
 const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     // checking if the user is exist
     const user = yield user_model_1.User.findOne({ email: payload === null || payload === void 0 ? void 0 : payload.email });
     if (!user) {
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'This user is not found!');
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "This user is not found!");
     }
     const matchPassword = bcryptjs_1.default.compareSync(payload.password, user.password);
     //checking if the password is correct
     if (!matchPassword)
-        throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'Password do not matched');
+        throw new AppError_1.default(http_status_1.default.FORBIDDEN, "Password do not matched");
     //create token and sent to the  client
     const jwtPayload = {
         _id: user === null || user === void 0 ? void 0 : user._id.toString(),
@@ -82,5 +83,5 @@ const createAccessToken = (refreshToken) => __awaiter(void 0, void 0, void 0, fu
 exports.AuthServices = {
     signup,
     login,
-    createAccessToken
+    createAccessToken,
 };

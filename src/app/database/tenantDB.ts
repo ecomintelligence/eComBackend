@@ -4,7 +4,7 @@ import config from "../config";
 // Tenant Connection Cache
 const tenantConnections: { [key: string]: Connection } = {};
 
-// ✅ **Reusable Function to Get or Create Tenant DB Connection**
+// **Reusable Function to Get or Create Tenant DB Connection**
 export const getTenantConnection = (tenantId: string): Connection => {
   if (!tenantConnections[tenantId]) {
     const tenantDbUri = `${config.db.base_db_url}/${tenantId}`;
