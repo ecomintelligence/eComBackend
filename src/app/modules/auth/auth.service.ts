@@ -12,7 +12,6 @@ import mongoose from "mongoose";
 const signup = async (payload: ISignupPayload) => {
   const { email, name, phone, password } = payload;
 
-  // master db name 
   const customObjectId = new mongoose.Types.ObjectId();
   const tenantId = `user_${customObjectId}`;
   
