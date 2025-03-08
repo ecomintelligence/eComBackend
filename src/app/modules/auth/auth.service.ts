@@ -8,8 +8,9 @@ import { createToken, verifyToken } from "../../utils/verifyJWT";
 import { MasterDBUser } from "../masterUser/masterUser.model";
 import { getTenantConnection } from "../../database/tenantDB";
 import mongoose from "mongoose";
+
 const signup = async (payload: ISignupPayload) => {
-  const { email, name, phone, password, store_name } = payload;
+  const { email, name, phone, password } = payload;
 
   // master db name 
   const customObjectId = new mongoose.Types.ObjectId();
@@ -26,7 +27,6 @@ const signup = async (payload: ISignupPayload) => {
     email,
     name,
     phone,
-    store_name,
     password,
   }
   const newUser = await User.create(userData);

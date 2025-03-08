@@ -7,7 +7,6 @@ export interface IUser {
   password: string;
   role: string;
   permission?: Types.ObjectId;
-  store: Types.ObjectId[]; 
   status: boolean;
   createdAt: Date;
   updatedAt: Date;
